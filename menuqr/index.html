@@ -5,57 +5,18 @@
     <title></title>
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-   
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-
-    <link href='http://fonts.googleapis.com/css?family=Titillium+Web:200,300' rel='stylesheet' type='text/css'>
-  <link href='http://fonts.googleapis.com/css?family=Droid+Sans+Mono' rel='stylesheet' type='text/css'>
- 
-  
-
-
-  <style type="text/css">
-  input, textarea {width:200px;margin:4px;padding:4px;border:#000000 1px solid;background:none;box-sizing:border-box;overflow:auto}
-  </style>
-  <script type="text/javascript" src="qrcode.js"></script>
-
-  
-
-  <style>
-    .carousel-inner > .item > img,
-    .carousel-inner > .item > a > img {
-      width:65%;
-      margin: auto;
-      
-    }
-    </style>
-
-
+    
 <script src="qrcode.js"></script>
-
-<style>
-    img{
-        width: 80%;
-    }
-    div img{
-        width: 50%;
-    }
-</style>
-
 
 </head>
 
 <body>
         
-
 <h2><center>Selecciona tus Postres</center></h2>
-
-          
+       
           <script>
             window.onload = function () {
                 
@@ -65,86 +26,26 @@
                 let baseDeDatos = [
                 {
                         ean13: 780200000406,
-                        descripcionCorta: 'Brazo de reina',
+                        digitoVerificador:3,
+                        descripcionCorta: 'PIZZA1',
                         precioFlejes: 1000,
                         img : "images/braaaaa.jpg"
                         
                     },
                     {
                         ean13: 780193001088,
-                        descripcionCorta: 'frappuccino choc',
-                        precioFlejes: 1200,
+                        digitoVerificador:5,
+                        descripcionCorta: 'PIZZA2',
+                        precioFlejes: 1000,
                         img : "images/frappuccinochocolate.jpg"
                         
                     },
                     {
                         ean13: 780791001897,
-                        descripcionCorta: 'Leche nevada',
-                        precioFlejes: 2100,
+                        digitoVerificador:1,
+                        descripcionCorta: 'PIZZA3',
+                        precioFlejes: 1000,
                         img : "images/leche_nevada.jpg"
-                        
-                    },
-                    {
-                        ean13: 780340300243,
-                        descripcionCorta: 'Leche asada',
-                        precioFlejes: 1600,
-                        img : "images/leche_asada.jpg"
-                        
-                    },
-                    {
-                        ean13: 780791002796,
-                        descripcionCorta: 'mousse de limon',
-                        precioFlejes: 1600,
-                        img : "images/moussedelimon.jpg"
-                        
-                    },
-                    {
-                        ean13: 780791001839,
-                        descripcionCorta: 'helados de sandia',
-                        precioFlejes: 1600,
-                        img : "images/heladosdesandia.jpg"
-                        
-                
-                    },
-                    {
-                        ean13: 11072,
-                        descripcionCorta: 'Tartaleta de Frutas',
-                        precioFlejes: 1600,
-                        img : "images/tartaleta_de_frutas.jpg"
-                        
-                    },
-                    {
-                        ean13: 780791002784,
-                        descripcionCorta: 'Pancakes',
-                        precioFlejes: 1600,
-                        img: "images/pancakes.jpg"
-                        
-                    },
-                    {
-                        ean13: 780191603888,
-                        descripcionCorta: 'Chilenitos',
-                        precioFlejes: 1600,
-                        img : "images/leche_nevada.jpg"
-                        
-                    },
-                    {
-                        ean13: 780347300160,
-                        descripcionCorta: 'Cheesecake',
-                        precioFlejes: 1600,
-                        img: "images/cheesecake_de_pascua.jpg"
-                        
-                    },{
-                        ean13: 780340300243,
-                        descripcionCorta: 'Picaron',
-                        precioFlejes: 1600,
-                        img : "images/c11v60x60.jpg"
-                        
-                    },{
-                        ean13: 780190702281,
-                        descripcionCorta: 'Picaron2',
-                        precioFlejes: 1600,
-                        img  : "images/c11v60x60.jpg"
-                        
                         
                     }
     
@@ -152,18 +53,10 @@
                 let $items = document.querySelector('#items');
                 let carrito = [];
                 let total = 0;
-
-                let codigos =0;
-               
-
+              
                 let $carrito = document.querySelector('#carrito');
                 let $total = document.querySelector('#total');
-
-                let $codigos = document.querySelector('#codigos');
-
-
-                // Funciones
-                
+                          
                 // Función para generar el código
                 
                 const $botonGenerarQR = document.querySelector("#btnGenerarQR"); // el botón que lo genera
@@ -212,7 +105,6 @@
                         miNodoCardBody.appendChild(miNodoPrecio);
                         miNodoCardBody.appendChild(miNodoBoton);
                         
-
                         miNodo.appendChild(miNodoCardBody);
                         $items.appendChild(miNodo);
                     }
@@ -244,8 +136,6 @@
                         miNodo.textContent = `${miItem[0]['descripcionCorta']} - $ ${miItem[0]['precioFlejes']}`;
                        // buscar 
                         
-
-
                         // Boton de borrar
                         let miBoton = document.createElement('button');
                         miBoton.classList.add('btn', 'btn-danger', 'mx-5');
@@ -280,38 +170,21 @@
                     let miItem = baseDeDatos.filter(function(itemBaseDatos) {
                         return itemBaseDatos['ean13'] == item;
                     });
-
                     total = total + miItem[0]['precioFlejes'];
                 
                 }
-
-
-
                 // Formateamos el total para que solo tenga dos o ningun decimales
                 let totalDosDecimales = total.toFixed(0);
                 // Renderizamos el precio en el HTML
                 $total.textContent = totalDosDecimales;
-
                 
             }
-
             // Eventos
-
           // Inicio
             renderItems()
         } 
     
     </script>
-
-
-
-
-
-
-
-
-
-
 
 </head>
 
@@ -334,22 +207,13 @@
           
           <div data-role="content">
             <form></form>
-             
-                
-                
+                         
               <center><button id="btnGenerarQR" class="btn btn-success">Terminar Eleccion</button>
                 
-                
-                
-      
-
             <center><div id="qr" >
               
             </div></center>
-        </div>          
-
-
-          
+        </div>               
          <p id="items"></p>      
       </aside>
   </div>
@@ -357,3 +221,5 @@
 </body>
 
 </html>
+           
+
