@@ -1,42 +1,34 @@
-// HTTP Module for Creating Server and Serving Static Files Using Node.js
-// Static Files: HTML, CSS, JS, Images
-// Get Complete Source Code from Pabbly.com
-
-var http = require('http');
-var fs = require('fs');
-var path = require('path');
-
-http.createServer(function(req, res){
-
-    if(req.url === "/"){
-        fs.readFile("./index.html", "UTF-8", function(err, html){
-            res.writeHead(200, {"Content-Type": "text/html"});
-            res.end(html);
+const express = require("express"),
+    request = require("request-promise"),
+    app = express(),
+    puerto = 3000,
+    RUTA_SERVIDOR = "https://api.cencosud.cl/v1.0/sm/cl/articulos/precios?fechaDesde=2018-05-01" +
+    "&apiKey=xxxxxx&idLocalSap=Jxx" +
+    "&ean13=";
+app.use(express.static('public'));
+app.get('/api/:ean13', (peticion, respuesta) => {
+    // Obtener el ean13 de la URL
+    let ean13 = peticion.params.ean13;
+    console.log("Información de :", ean13);
+    //https://parzibyte.me/blog/2019/01/19/peticion-http-get-simple-node-js-request/
+    request({
+            uri: RUTA_SERVIDOR + ean13, // Concatenar al hacer la operación
+            json: true,
+        }).then(datosDeProducto => {
+            respuesta.setHeader("Content-Type", "application/json");
+            respuesta.send(datosDeProducto);
+        })
+        .catch(err => {
+            respuesta.send(err);
         });
-    }else if(req.url.match("\.css$")){
-        var cssPath = path.join(__dirname, '', req.url);
-        var fileStream = fs.createReadStream(cssPath, "UTF-8");
-        res.writeHead(200, {"Content-Type": "text/css"});
-        fileStream.pipe(res);
-    }else if(req.url.match("\.js$")){
-        var cssPath = path.join(__dirname, '', req.url);
-        var fileStream = fs.createReadStream(cssPath, "UTF-8");
-        res.writeHead(200, {"Content-Type": "text/js"});
-        fileStream.pipe(res);
-   }else if(req.url.match("\.jpg$")){
-        var imagePath = path.join(__dirname, '', req.url);
-        var fileStream = fs.createReadStream(imagePath);
-        res.writeHead(200, {"Content-Type": "image/jpg"});
-        fileStream.pipe(res);
-
-    }else if(req.url.match("\.png$")){
-        var imagePath = path.join(__dirname, '', req.url);
-        var fileStream = fs.createReadStream(imagePath);
-        res.writeHead(200, {"Content-Type": "image/png"});
-        fileStream.pipe(res);
-    }else{
-        res.writeHead(404, {"Content-Type": "text/html"});
-        res.end("No Page Found");
+});
+// Una vez definidas nuestras rutas podemos iniciar el servidor
+app.listen(puerto, err => {
+    if (err) {
+        // Aquí manejar el error
+        console.error("Error escuchando: ", err);
+        return;
     }
-
-}).listen(3000);
+    // Si no se detuvo arriba con el return, entonces todo va bien ;)
+    console.log(`Escuchando en el puerto :${puerto}`);
+});
