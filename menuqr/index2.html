@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <link href='http://fonts.googleapis.com/css?family=Titillium+Web:200,300' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Droid+Sans+Mono' rel='stylesheet' type='text/css'>
+
+
+
+    <script src="qrcode.js"></script>
+
+
+
+</head>
+
+<body>
+
+
+    <h2>
+        <center>Selecciona tus Postres</center>
+    </h2>
+
+
+    <script>
+        window.onload = function() {
+
+
+            // Variables
+
+            let baseDeDatos = [{
+                    ean13: 780200000406,
+					digitoVerificador: 3,
+                    descripcionCorta: 'Brazo de reina',
+                    precioFlejes: 1000,
+                    img: "images/braaaaa.jpg"
+
+                }, {
+                    ean13: 1,
+					digitoVerificador: 3,
+                    descripcionCorta: 'frappuccino choc',
+                    precioFlejes: 1200,
+                    img: "images/frappuccinochocolate.jpg"
+
+                }, {
+                    ean13: 780791001897,
+					digitoVerificador: 3,
+                    descripcionCorta: 'Leche nevada',
+                    precioFlejes: 2100,
+                    img: "images/leche_nevada.jpg"
+
+                }, {
+                    ean13: 780340300243,
+					digitoVerificador: 3,
+                    descripcionCorta: 'Leche asada',
+                    precioFlejes: 1600,
+                    img: "images/leche_asada.jpg"
+
+                }, {
+                    ean13: 780791002796,
+					digitoVerificador: 3,
+                    descripcionCorta: 'mousse de limon',
+                    precioFlejes: 1600,
+                    img: "images/moussedelimon.jpg"
+
+                }, {
+                    ean13: 780791001839,
+					digitoVerificador: 3,
+                    descripcionCorta: 'helados de sandia',
+                    precioFlejes: 1600,
+                    img: "images/heladosdesandia.jpg"
+
+
+                }, {
+                    ean13: 780791002784,
+					digitoVerificador: 3,
+                    descripcionCorta: 'Pancakes',
+                    precioFlejes: 1600,
+                    img: "images/pancakes.jpg"
+
+                }, {
+                    ean13: 780191603888,
+					digitoVerificador: 3,
+                    descripcionCorta: 'Chilenitos',
+                    precioFlejes: 1600,
+                    img: "images/leche_nevada.jpg"
+
+                }, {
+                    ean13: 780347300160,
+					digitoVerificador: 3,
+                    descripcionCorta: 'Cheesecake',
+                    precioFlejes: 1600,
+                    img: "images/cheesecake_de_pascua.jpg"
+
+                }, {
+                    ean13: 780340300243,
+					digitoVerificador: 3,
+                    descripcionCorta: 'Picaron',
+                    precioFlejes: 1600,
+                    img: "images/c11v60x60.jpg"
+
+                }, {
+                    ean13: 780190702281,
+					digitoVerificador: 3,
+                    descripcionCorta: 'Picaron2',
+                    precioFlejes: 1600,
+                    img: "images/c11v60x60.jpg"
+
+
+                }
+
+            ]
+            let $items = document.querySelector('#items');
+            let carrito = [];
+            let total = 0;
+
+            let codigos = 0;
+
+
+            let $carrito = document.querySelector('#carrito');
+            let $total = document.querySelector('#total');
+
+            let $codigos = document.querySelector('#codigos');
+
+            // Código para refrescar el carrito de compras según API
+
+            const rellenarInformacionDeUnProductoSegunIndice = (indice) => {
+                if (indice >= baseDeDatos.length) return;
+                let elemento = baseDeDatos[indice];
+                console.log("Trayendo información de ", elemento);
+                fetch("http://localhost:3000/api/" + elemento.ean13)
+                    .then(r => r.json())
+                    .then(productos => {
+                        // Comprobar si hay productos con ese código
+                        if (!productos || productos.length <= 0) {
+                            // No hay productos con ese ean13
+                            return;
+                        }
+                        // Necesitamos el primer producto, no todo el arreglo
+                        let producto = productos[0];
+                        if (!producto.descripcionCorta || !producto.precioFlejes) {
+                            // Cuidado: el producto que buscamos no existe o no tiene descripcionCorta / precioFlejes
+                            return;
+                        }
+                        elemento.descripcionCorta = producto.descripcionCorta;
+                        elemento.precioFlejes = producto.precioFlejes;
+                        // Renderizamos el carrito 
+                        renderizarCarrito();
+                        renderItems();
+                    });
+            }
+            baseDeDatos.forEach((elemento, index) => {
+                rellenarInformacionDeUnProductoSegunIndice(index);
+            });
+            // Termina código de API
+
+
+            // Funciones
+
+            
+			// Función para generar el código
+
+            const $botonGenerarQR = document.querySelector("#btnGenerarQR"); // el botón que lo genera
+
+            $botonGenerarQR.addEventListener("click", () => {
+                var typeNumber = 4;
+                var errorCorrectionLevel = 'L';
+                var qr = qrcode(typeNumber, errorCorrectionLevel);
+                qr.addData(carrito.join("\n")); // Unir el arreglo "carrito"
+                qr.make();
+                // Ponerlo en el div con id qr
+                document.querySelector('#qr').innerHTML = qr.createImgTag();
+            });
+			
+			
+			
+
+            // Código que ya estaba antes:
+            function renderItems() {
+                // Limpiar $items
+                $items.innerHTML = "";
+                for (let info of baseDeDatos) {
+                    // Estructura
+                    let miNodo = document.createElement('div');
+                    miNodo.classList.add('card', 'col-sm-4');
+                    // Body
+                    let miNodoCardBody = document.createElement('div');
+                    miNodoCardBody.classList.add('card-body');
+                    // Titulo
+                    let miNodoTitle = document.createElement('h5');
+                    miNodoTitle.classList.add('card-title');
+                    miNodoTitle.textContent = info['descripcionCorta'];
+                    // Precio
+                    let miNodoPrecio = document.createElement('p');
+                    miNodoPrecio.classList.add('card-text');
+                    miNodoPrecio.textContent = '$' + info['precioFlejes'];
+                    // Boton 
+                    let miNodoBoton = document.createElement('button');
+                    miNodoBoton.classList.add('btn', 'btn-success');
+                    miNodoBoton.textContent = 'AGREGAR';
+                    miNodoBoton.setAttribute('marcador', info['ean13']);
+                    miNodoBoton.addEventListener('click', anyadirCarrito);
+                    //imagen
+                    let miNodoimagen = document.createElement('img');
+                    miNodoimagen.classList.add('img');
+                    miNodoimagen.setAttribute("src", info['img']);
+					
+
+
+
+                    // Insertamoss
+                    miNodoCardBody.appendChild(miNodoimagen);
+                    miNodoCardBody.appendChild(miNodoTitle);
+                    miNodoCardBody.appendChild(miNodoPrecio);
+                    miNodoCardBody.appendChild(miNodoBoton);
+
+
+                    miNodo.appendChild(miNodoCardBody);
+                    $items.appendChild(miNodo);
+                }
+            }
+
+            
+			function anyadirCarrito() {
+                // Anyadimos el Nodo a nuestro carrito
+                carrito.push(this.getAttribute('marcador'))
+                    // Calculo el total
+                calcularTotal();
+                // Renderizamos el carrito 
+                renderizarCarrito();
+
+            }
+			
+			
+			
+			
+
+            function renderizarCarrito() {
+                // Vaciamos todo el html
+                $carrito.textContent = '';
+                // Generamos los Nodos a partir de carrito
+                carrito.forEach(function(item, indice) {
+                    // Obtenemos el item que necesitamos de la variable base de datos
+                    let miItem = baseDeDatos.filter(function(itemBaseDatos) {
+                        return itemBaseDatos['ean13'] == item;
+                    });
+                    // Creamos el nodo del item del carrito
+                    let miNodo = document.createElement('li');
+                    miNodo.classList.add('list-group-item', 'text-right');
+
+
+                    miNodo.textContent = `${miItem[0]['descripcionCorta']} - $ ${miItem[0]['precioFlejes']}`;
+                    // buscar 
+
+
+
+                    // Boton de borrar
+                    let miBoton = document.createElement('button');
+                    miBoton.classList.add('btn', 'btn-danger', 'mx-5');
+                    miBoton.textContent = 'X';
+                    miBoton.setAttribute('posicion', indice);
+                    miBoton.addEventListener('click', borrarItemCarrito);
+
+                    // Mezclamos nodos
+                    miNodo.appendChild(miBoton);
+                    $carrito.appendChild(miNodo);
+                })
+            }
+
+            function borrarItemCarrito() {
+                // Obtenemos la posicion que hay en el boton pulsado
+                let posicion = this.getAttribute('posicion');
+                // Borramos la posicion que nos interesa
+                carrito.splice(posicion, 1);
+                // volvemos a renderizar
+                renderizarCarrito();
+                // Calculamos de nuevo el precio
+                calcularTotal();
+            }
+
+            function calcularTotal() {
+                // Limpiamos precio anterior
+                total = 0;
+
+                // Recorremos el array del carrito
+                for (let item of carrito) {
+                    // De cada elemento obtenemos su precio
+                    let miItem = baseDeDatos.filter(function(itemBaseDatos) {
+                        return itemBaseDatos['ean13'] == item;
+                    });
+
+                    total = total + miItem[0]['precioFlejes'];
+
+                }
+
+
+
+                // Formateamos el total para que solo tenga dos o ningun decimales
+                let totalDosDecimales = total.toFixed(0);
+                // Renderizamos el precio en el HTML
+                $total.textContent = totalDosDecimales;
+
+
+            }
+
+            // Eventos
+
+            // Inicio
+            renderItems()
+        }
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+    </head>
+
+
+
+    <div class="container">
+        <div class="row">
+            <!-- Elementos generados a partir del JSON -->
+            <main id="items" class="col-sm-8 row"></main>
+            <!-- Carrito -->
+            <aside class="col-sm-4">
+                <h2>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspCarrito</h2>
+                <!-- Elementos del carrito -->
+                <ul id="carrito" class="list-group"></ul>
+                <hr>
+                <!-- Precio total -->
+                <p class="text-right">Total: $ <span id="total"></span></p>
+
+
+
+                <div data-role="content">
+                    <form></form>
+
+
+
+                    <center><button id="btnGenerarQR" class="btn btn-success">Terminar Eleccion</button>
+
+
+
+
+
+                        <center>
+                            <div id="qr">
+
+                            </div>
+                        </center>
+                </div>
+
+
+
+                <p id="items"></p>
+            </aside>
+        </div>
+    </div>
+</body>
+
+</html>
